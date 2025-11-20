@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Himanshu Dubey - Solutions Manager</title>
     
-    <!-- 1. Load Dependencies from CDN -->
+    <!-- 1. Load Libraries from CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -54,17 +54,17 @@
 <body>
     <div id="root"></div>
 
-    <!-- 4. The React Application -->
+    <!-- 4. The React Application Logic -->
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
 
-        // --- CONSTANTS & DATA ---
+        // --- RESUME DATA ---
         const RESUME_DATA = {
           personalInfo: {
             name: "Himanshu Dubey",
             title: "Solutions Manager | Cybersecurity Expert",
             location: "Atlanta, Georgia, United States",
-            avatarUrl: "profile.jpg", // Make sure this file exists in your repo!
+            avatarUrl: "profile.jpg", 
             socials: [
               { platform: "LinkedIn", url: "https://www.linkedin.com/in/himanshu-dubey-2ab62062/", icon: "linkedin" }
             ]
@@ -153,7 +153,6 @@
               date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
               readTime: "2 min read",
               tags: ["Guide", "GitHub", "Markdown"],
-              // You can use 'content' for short text, OR 'markdownUrl' for files hosted on GitHub
               content: `
 # Managing Your Cybersecurity Blog
 
@@ -164,10 +163,10 @@ This platform is designed to let you share your expertise in Threat Intelligence
 You can host your blog content directly on GitHub.
 
 ### Step 1: Write your content
-Create a \`.md\` file for your article in your repo.
+Create a \`.md\` file for your article in your repo (e.g., create a folder named 'posts').
 
 ### Step 2: Link it
-In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a new entry using the **Raw** URL of your file:
+Open \`index.html\` (this file), scroll down to the \`blogPosts\` array in the \`RESUME_DATA\` object, and add a new entry using the **Raw** URL of your file:
 
 \`\`\`javascript
 {
@@ -185,18 +184,16 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
           ]
         };
 
-        // --- HELPER COMPONENTS ---
+        // --- COMPONENTS ---
 
-        // Icon Component to handle Lucide icons in React
         const Icon = ({ name, className }) => {
             useEffect(() => {
                 lucide.createIcons();
             }, [name]);
-
+            // Basic mapping to lucide class names
             return <i data-lucide={name.toLowerCase()} className={className}></i>;
         };
 
-        // --- MAIN APP COMPONENT ---
         const App = () => {
             const { personalInfo, aboutMe, blogPosts, experience } = RESUME_DATA;
             const [activeTab, setActiveTab] = useState('about');
@@ -204,7 +201,10 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
             const [postContent, setPostContent] = useState('');
             const [isPostLoading, setIsPostLoading] = useState(false);
 
-            // Fetch Markdown logic
+            useEffect(() => {
+                lucide.createIcons();
+            }, [activeTab, selectedPost]);
+
             useEffect(() => {
                 if (selectedPost) {
                     if (selectedPost.markdownUrl) {
@@ -230,14 +230,8 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
                 }
             }, [selectedPost]);
 
-            const handleBackToBlog = () => {
-                setSelectedPost(null);
-                setPostContent("");
-            };
-
             return (
                 <div className="min-h-screen bg-slate-50 relative font-sans text-slate-800 selection:bg-indigo-200 selection:text-indigo-900 py-8 sm:py-12 px-4">
-                    {/* Animated Background */}
                     <div className="fixed inset-0 z-0 pointer-events-none opacity-70">
                         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-300 rounded-full blur-[120px] animate-blob mix-blend-multiply"></div>
                         <div className="absolute top-[10%] right-[-10%] w-[40vw] h-[40vw] bg-blue-300 rounded-full blur-[120px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
@@ -247,10 +241,8 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
                     <main className="relative z-10 max-w-4xl mx-auto">
                         <div className="bg-white/60 backdrop-blur-3xl border border-white/60 rounded-[2.5rem] shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] ring-1 ring-white/50 overflow-hidden flex flex-col">
                             
-                            {/* Header - Show only if not reading a post */}
                             {!selectedPost && (
                                 <div className="flex flex-col items-center p-8 sm:p-12 pb-8 bg-gradient-to-b from-white/40 to-white/10 border-b border-white/40">
-                                    {/* Avatar */}
                                     <div className="relative w-32 h-32 sm:w-40 sm:h-40 mb-6 group cursor-default">
                                         <div className="w-full h-full rounded-full p-1.5 bg-white shadow-xl relative z-10 ring-1 ring-slate-100">
                                             <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center overflow-hidden text-slate-400">
@@ -290,10 +282,7 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
                                 </div>
                             )}
 
-                            {/* Content */}
                             <div className={`p-8 sm:p-12 bg-white/30 min-h-[600px] ${selectedPost ? 'pt-8' : ''}`}>
-                                
-                                {/* About Tab */}
                                 {activeTab === 'about' && !selectedPost && (
                                     <div className="space-y-12 animate-in fade-in duration-500">
                                         <section>
@@ -394,7 +383,6 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
                                     </div>
                                 )}
 
-                                {/* Blog List Tab */}
                                 {activeTab === 'blog' && !selectedPost && (
                                     <div className="space-y-8 animate-in fade-in duration-500">
                                         <div className="flex items-center justify-between mb-8">
@@ -429,7 +417,6 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
                                     </div>
                                 )}
 
-                                {/* Blog Detail Tab */}
                                 {activeTab === 'blog' && selectedPost && (
                                     <div className="animate-in fade-in slide-in-from-right-8 duration-500">
                                         <button onClick={handleBackToBlog} className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 mb-8 group transition-colors font-medium">
@@ -463,12 +450,11 @@ In \`index.html\` (this file), scroll down to the \`blogPosts\` array and add a 
                                     </div>
                                 )}
 
-                                {/* Footer - Hide when reading post */}
                                 {!selectedPost && (
                                     <div className="mt-16 pt-8 border-t border-slate-200/60 flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
                                         <div className="flex flex-col items-center">
                                             <span className="text-slate-500 mb-2">Interested in working together?</span>
-                                            <a href="https://www.linkedin.com/public-profile/settings?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_self_edit_contact-info%3B81kYAEd2R12JKTtjkkaPVQ%3D%3D" target="_blank" rel="noreferrer" className="text-sm font-bold text-white bg-slate-800 hover:bg-slate-700 transition-all px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
+                                            <a href="https://www.linkedin.com/in/himanshu-dubey-2ab62062/" target="_blank" rel="noreferrer" className="text-sm font-bold text-white bg-slate-800 hover:bg-slate-700 transition-all px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
                                                 Get in touch <Icon name="linkedin" className="w-4 h-4" />
                                             </a>
                                         </div>
