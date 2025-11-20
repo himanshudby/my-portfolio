@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/drive/16WZypJNUM964rHwSHQTM3ctzNy41GkdE
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+How to Add a New Blog Post
+Write the Post: Write your blog post in a text editor and save it as a Markdown file (e.g., my-security-post.md).
+Upload to GitHub:
+In your repo, click Add file > Upload files.
+Upload your .md file (you can put it in a posts folder if you want to be organized, or just the root).
+Click Commit changes.
+Get the Link:
+Click on the file you just uploaded in GitHub.
+Click the Raw button (top right of the file view).
+Copy the URL from your browser bar.
+Update the Website:
+Open constants.ts in GitHub and click the Edit (pencil) icon.
+Scroll down to blogPosts: [...].
+Add a new entry inside the brackets like this:
+code
+TypeScript
+{
+  id: "2", // Unique number
+  title: "My New Security Post",
+  excerpt: "A short summary of what this is about...",
+  date: "December 20, 2023",
+  readTime: "5 min read",
+  tags: ["Security", "Cloud"],
+  markdownUrl: "PASTE_YOUR_RAW_URL_HERE" 
+},
+Click Commit changes.
